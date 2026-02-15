@@ -29,7 +29,7 @@ ALLOWED_TEXT_EXT = {".txt"}
 # ── Serve the HTML form ─────────────────────────────────────────────
 @app.route("/")
 def index():
-    return send_file("index.html")
+    return send_file(os.path.join(os.path.dirname(__file__), "index.html"))
 
 
 # ── Handle uploads ──────────────────────────────────────────────────
@@ -141,4 +141,4 @@ def process_files(label_path: str, app_text_path: str) -> dict:
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
