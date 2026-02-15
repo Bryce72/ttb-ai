@@ -1,0 +1,206 @@
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #f5f4f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1a1a1a;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      color: #111;
+    }
+
+    h1 span {
+      color: #888;
+      font-weight: 400;
+    }
+
+    .upload-box {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .upload-box:hover {
+      border-color: #888;
+      background: #eee;
+    }
+
+    .upload-box.has-file {
+      border-color: #2a7d4f;
+      border-style: solid;
+      background: #eafaf0;
+    }
+
+    .upload-box input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .upload-hint {
+      font-size: 0.75rem;
+      color: #999;
+    }
+
+    .file-name {
+      font-size: 0.8rem;
+      color: #2a7d4f;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 0.85rem;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 0.75rem;
+      transition: background 0.2s;
+    }
+
+    button[type="submit"]:hover { background: #333; }
+    button[type="submit"]:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* ── Loading state ─────────────────────────────── */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .loading.active { display: block; }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #ddd;
+      border-top-color: #1a1a1a;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 0.75rem;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading p {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    /* ── Results ────────────────────────────────────── */
+    #results {
+      display: none;
+      margin-top: 2rem;
+    }
+
+    #results.active { display: block; }
+
+    .result-header {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #1a1a1a;
+    }
+
+    .result-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #333;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    /* Color-code PASS / FAIL */
+    .result-body .pass {
+      color: #1a7d3f;
+      font-weight: 600;
+    }
+
+    .result-body .fail {
+      color: #c0392b;
+      font-weight: 600;
+    }
+
+    .result-body .approved {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.75rem;
+      background: #eafaf0;
+      color: #1a7d3f;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .result-body .needs-revision {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.75rem;
+      background: #fdecea;
+      color: #c0392b;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .error-msg {
+      background: #fdecea;
+      color: #c0392b;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .reset-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.25rem;
+      background: none;
+      border: 2px solid #1a1a1a;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #1a1a1a;
+      color: #fff;
+    }

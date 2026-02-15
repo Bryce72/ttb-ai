@@ -1,1 +1,16 @@
 personalnotes.txt
+
+# Dependencies
+__pycache__/
+*.pyc
+
+# Uploads
+uploads/
+
+# Environment
+.env
+venv/
+.venv/
+
+# API key
+.anthropic

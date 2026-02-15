@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ttb - ai</title>
+  <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ttb - ai <span>Upload</span></h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="upload-box" id="box1">
+        <input type="file" name="label_image" accept=".jpg,.jpeg,.png" id="file1" required>
+        <div class="upload-label">Label Image</div>
+        <div class="upload-hint">.jpg, .jpeg, .png</div>
+        <div class="file-name" id="name1"></div>
+      </div>
+
+      <div class="upload-box" id="box2">
+        <input type="file" name="application_info" accept=".txt" id="file2" required>
+        <div class="upload-label">Application Information</div>
+        <div class="upload-hint">.txt</div>
+        <div class="file-name" id="name2"></div>
+      </div>
+
+      <button type="submit" id="submitBtn" disabled>Submit</button>
+    </form>
+
+    <!-- Loading -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Analyzing label compliance…</p>
+    </div>
+
+    <!-- Results -->
+    <div id="results">
+      <div class="result-header">Compliance Report</div>
+      <div class="result-body" id="resultBody"></div>
+      <button class="reset-btn" onclick="resetForm()">New Analysis</button>
+    </div>
+  </div>
+
+  <script>
+    // ── File input setup ──────────────────────────────
+    function setup(inputId, boxId, nameId) {
+      const input = document.getElementById(inputId);
+      const box = document.getElementById(boxId);
+      const nameEl = document.getElementById(nameId);
+      input.addEventListener('change', () => {
+        if (input.files.length) {
+          box.classList.add('has-file');
+          nameEl.textContent = input.files[0].name;
+        } else {
+          box.classList.remove('has-file');
+          nameEl.textContent = '';
+        }
+        checkReady();
+      });
+    }
+
+    function checkReady() {
+      document.getElementById('submitBtn').disabled =
+        !(document.getElementById('file1').files.length && document.getElementById('file2').files.length);
+    }
+
+    setup('file1', 'box1', 'name1');
+    setup('file2', 'box2', 'name2');
+
+    // ── Form submission via fetch ─────────────────────
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      // Show loading, hide form
+      form.style.display = 'none';
+      document.getElementById('loading').classList.add('active');
+      document.getElementById('results').classList.remove('active');
+
+      try {
+  const res = await fetch('/upload', {
+    method: 'POST',
+    body: formData,
+  });
+
+  // Handle non-200 responses safely
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Server error (${res.status}): ${text}`);
+  }
+
+  const data = await res.json();
+
+  document.getElementById('loading').classList.remove('active');
+
+  if (data.status === 'success') {
+    document.getElementById('resultBody').innerHTML =
+      formatAnalysis(data.analysis);
+    document.getElementById('results').classList.add('active');
+  } else {
+    showError(data.analysis || 'Unexpected response from server.');
+    document.getElementById('results').classList.add('active');
+  }
+
+} catch (err) {
+  document.getElementById('loading').classList.remove('active');
+  showError('Request failed: ' + err.message);
+  document.getElementById('results').classList.add('active');
+}
+
+    });
+
+    // ── Format Claude's response ──────────────────────
+    function formatAnalysis(text) {
+      let html = text
+        // Highlight PASS / FAIL
+        .replace(/\bPASS\b/g, '<span class="pass">PASS</span>')
+        .replace(/\bFAIL\b/g, '<span class="fail">FAIL</span>')
+        // Highlight final verdict
+        .replace(/\bAPPROVED\b/g, '<span class="approved">APPROVED</span>')
+        .replace(/\bNEEDS REVISION\b/g, '<span class="needs-revision">NEEDS REVISION</span>');
+
+      return html;
+    }
+
+    function showError(msg) {
+      document.getElementById('resultBody').innerHTML = '<div class="error-msg">' + msg + '</div>';
+      document.getElementById('results').classList.add('active');
+    }
+
+    function resetForm() {
+      const form = document.getElementById('uploadForm');
+      form.reset();
+      form.style.display = 'block';
+      document.getElementById('results').classList.remove('active');
+      document.getElementById('box1').classList.remove('has-file');
+      document.getElementById('box2').classList.remove('has-file');
+      document.getElementById('name1').textContent = '';
+      document.getElementById('name2').textContent = '';
+      document.getElementById('submitBtn').disabled = true;
+    }
+  </script>
+</body>
+</html>

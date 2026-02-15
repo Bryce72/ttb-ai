@@ -50,4 +50,3 @@ The goal of this project is to create an MVP to read a document and image of a l
 
 
 ## How to Test Run this
-- TBD
