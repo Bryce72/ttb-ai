@@ -1,0 +1,4 @@
+BRAND=ABC WINERY
+CLASS=American Red Wine
+ABV=13%
+NET=750 ML

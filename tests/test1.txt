@@ -1,0 +1,4 @@
+BRAND=12345 IMPORTS
+CLASS=Rum with Coconut Liqueur
+ABV=18%
+NET=200 ML

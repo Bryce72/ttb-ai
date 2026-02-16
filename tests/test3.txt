@@ -1,0 +1,4 @@
+BRAND=Old Forester King Ranch
+CLASS=Kentucky Straight Bourbon Whisky
+ABV=52.5%
+NET=750 ML
