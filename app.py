@@ -33,8 +33,7 @@ ALLOWED_TEXT_EXT = {".txt"}
 def get_real_ip():
     return request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
 
-limiter = Limiter(get_real_ip, app=app)
-
+limiter = Limiter(get_real_ip, app=app, storage_uri="memory://")
 
 # ── Serve the HTML form ─────────────────────────────────────────────
 @app.route("/")
