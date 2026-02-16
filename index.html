@@ -8,8 +8,9 @@
 </head>
 <body>
   <div class="container">
-    <h1>ttb - ai <span>Upload</span></h1>
-
+    <h1>ttb - ai 
+        <a href="https://github.com/Bryce72/ttb-ai" target="_blank" style="font-size: 0.75rem; font-weight: 400; color: #888; text-decoration: none; margin-left: 0.5rem;">Instructions & Guide ↗</a>
+    </h1>
     <form id="uploadForm" enctype="multipart/form-data">
       <div class="upload-box" id="box1">
         <input type="file" name="label_image" accept=".jpg,.jpeg,.png" id="file1" required>
@@ -24,6 +25,28 @@
         <div class="upload-hint">.txt</div>
         <div class="file-name" id="name2"></div>
       </div>
+
+      <details class="format-help">
+        <summary>How should my .txt file be formatted? Example Below</summary>
+        <div class="format-example">
+          <p>Use <strong>KEY=VALUE</strong> pairs, one per line:</p>
+          <pre>BRAND=Malt & Hop Brewing Co.
+                CLASS=Dark Ale
+                ABV=12%
+                NET=12 FL OZ</pre>
+          <p>Plain text only. No headers or extra formatting.</p>
+        </div>
+      </details>
+
+
+      <details class="format-help">
+        <summary>What should my label image look like? Example Below</summary>
+        <div class="format-example">
+          <p>A clear photo or scan of the full label. All text must be readable.</p>
+          <img src="approvedTest1.png" alt="Example label image" style="width: 100%; border-radius: 6px; margin-top: 0.5rem;">
+        </div>
+      </details>
+
 
       <button type="submit" id="submitBtn" disabled>Submit</button>
     </form>
