@@ -1,6 +1,6 @@
 # **ttb-ai**
 
-The goal of this project is to create an MVP to read a document and image of a label and determine if it passes the [TTB guidelines](https://www.ttb.gov/labeling/beverage-alcohol-manual).
+The goal of this project is to create an MVP to read a document and image of a label and determine if it passes the TTB Guidelines.
 
 🔗 **[Live Demo](https://ttb-ai.onrender.com)**
 
@@ -17,7 +17,7 @@ The goal of this project is to create an MVP to read a document and image of a l
 ## Example of Label Image in `.png`
 
 
- ![Example Label](./approvedTest1.png)
+ ![Example Label](/static/testLabel4.png)
 
 ## Application File Format
 
@@ -101,7 +101,7 @@ NET=12 FL OZ
 - Government Warning does not need to be in a specific orientation or exact formatting — only that all required content is present in substance.
 - City and state are sufficient for the name/address requirement (full street address not required).
 - Minor formatting differences (casing, spacing, line breaks) are not grounds for failure.
-- This is a prototype aid for reviewers, **not a replacement** for official [TTB review](https://www.ttb.gov/labeling).
+- This is a prototype aid for reviewers, **not a replacement** for official TTB Review.
 
 ---
 
