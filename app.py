@@ -16,14 +16,24 @@ import base64
 from flask import Flask, request, redirect, url_for, send_file, jsonify
 from PIL import Image
 
+from flask_limiter import Limiter
+
+
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 ALLOWED_IMAGE_EXT = {".jpg", ".jpeg", ".png"}
 ALLOWED_TEXT_EXT = {".txt"}
+
+# rate limit: 5 uploads per minute, 100 uploads per day per IP
+def get_real_ip():
+    return request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
+
+limiter = Limiter(get_real_ip, app=app)
 
 
 # ── Serve the HTML form ─────────────────────────────────────────────
@@ -34,6 +44,7 @@ def index():
 
 # ── Handle uploads ──────────────────────────────────────────────────
 @app.route("/upload", methods=["POST"])
+@limiter.limit("5/minute;100/day")
 def upload():
     try:
         label_file = request.files.get("label_image")

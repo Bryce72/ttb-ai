@@ -3,3 +3,4 @@ pillow
 anthropic
 python-dotenv
 gunicorn
+Flask-Limiter
