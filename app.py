@@ -22,6 +22,7 @@ from flask_limiter import Limiter
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 
+client = anthropic.Anthropic() 
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -94,10 +95,8 @@ def process_files(label_path: str, app_text_path: str) -> dict:
     with open(app_text_path, "r", encoding="utf-8") as f:
         text_content = f.read()
 
-    
-    client = anthropic.Anthropic() 
 
-    message = client.beta.messages.create(
+    message = client.messages.create(
         model="claude-opus-4-6",
         max_tokens=1096,
         messages=[
