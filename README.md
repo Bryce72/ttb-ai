@@ -4,6 +4,9 @@ The goal of this project is to create an MVP to read a document and image of a l
 
 🔗 **[Live Demo](https://ttb-ai.onrender.com)**
 
+- Do note I have set some safety features. Maximum of 5 uploads per minute or 100 uploads per day per IP. 
+- Maximum of a 5mb file allowed to be uploaded.
+
 ---
 
 ## Two Files Needed
@@ -13,7 +16,7 @@ The goal of this project is to create an MVP to read a document and image of a l
 
 ## Example of Label Image in `.png`
 
-<!-- Add your example label image here -->
+
  ![Example Label](./approvedTest1.png)
 
 ## Application File Format
