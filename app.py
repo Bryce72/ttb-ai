@@ -46,6 +46,7 @@ def index():
 @app.route("/upload", methods=["POST"])
 @limiter.limit("5/minute;100/day")
 def upload():
+    print(f"Request from IP: {get_real_ip()}")
     try:
         label_file = request.files.get("label_image")
         app_file = request.files.get("application_info")
