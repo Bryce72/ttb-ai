@@ -97,7 +97,7 @@ def process_files(label_path: str, app_text_path: str) -> dict:
 
 
     message = client.messages.create(
-        model="claude-opus-4-6",
+        model="claude-sonnet-4-5-20250514",
         max_tokens=1096,
         messages=[
             {
