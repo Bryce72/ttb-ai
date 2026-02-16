@@ -1,4 +1,4 @@
-BRAND=Maltz
+BRAND=Malt & Hop Brewing Co.
 CLASS=Dark Ale
 ABV=12%
 NET=12 FL OZ

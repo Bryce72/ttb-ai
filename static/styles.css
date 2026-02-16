@@ -245,3 +245,22 @@
 .format-example p {
   margin: 0.25rem 0;
 }
+
+
+.download-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1a1a1a;
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border: 1.5px solid #1a1a1a;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.download-link:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
