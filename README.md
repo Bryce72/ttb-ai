@@ -1,52 +1,177 @@
 # **ttb-ai**
 
-The goal of this project is to create an MVP to read a document and image of a label and determine if it passes the TTB guidelines.
+The goal of this project is to create an MVP to read a document and image of a label and determine if it passes the [TTB guidelines](https://www.ttb.gov/labeling/beverage-alcohol-manual).
+
+🔗 **[Live Demo](https://ttb-ai.onrender.com)**
+
+---
+
+## Two Files Needed
+
+1. **Application** in a `.txt` file — contains the approved application data
+2. **Label image** in `.png` or `.jpg` — a photo or scan of the physical label
+
+## Example of Label Image in `.png`
+
+<!-- Add your example label image here -->
+ ![Example Label](./approvedTest1.png)
+
+## Application File Format
+
+The application `.txt` file must use `KEY=VALUE` pairs, one per line. These values represent the approved application data that the label will be checked against.
+
+**Required keys:**
+
+| Key | Description | Example |
+|-----|-------------|---------|
+| `BRAND` | Brand name as approved | `Malt & Hop Brewing Co.` |
+| `CLASS` | Product class/type | `Dark Ale` |
+| `ABV` | Alcohol by volume | `12%` |
+| `NET` | Net contents / volume | `12 FL OZ` |
+
+**Example `application.txt`:**
+
+```
+BRAND=Malt & Hop Brewing Co.
+CLASS=Dark Ale
+ABV=12%
+NET=12 FL OZ
+```
+
+> **Note:** The file must be plain text (`.txt`). No headers, no extra formatting. One field per line.
+
+---
 
 ## Tech Stack
-- **OCR**: Google Vision API 
-- **LLM**: Claude API for field matching
-- **Frontend**: React or TBD (simple upload interface)
-- **Backend**: Python
+
+- **LLM / OCR**: [Claude API](https://docs.anthropic.com/en/docs/about-claude/models) (vision + text reasoning)
+- **Frontend**: HTML / CSS / JavaScript
+- **Backend**: [Python](https://www.python.org/)
+- **Hosting**: [Render](https://render.com/)
 
 ## Core Features
+
 - Upload a label image (JPEG/PNG) and a text file containing application data
-- Extract all text from the label image via OCR
-- Compare extracted label fields against application data and TTB requirements
+- Extract all text from the label image via Claude's vision capabilities
+- Compare extracted label fields against application data
 - Return a pass/fail compliance report with flagged mismatches
 
-## TTB Fields Verified
-- Brand name (case insensitive fuzzy matching)
-- Class/type designation
-- Alcohol content (ABV / proof)
-- Net contents
-- Name and address of bottler/producer
-- Country of origin (imports)
-- Government Health Warning Statement (exact wording, `GOVERNMENT WARNING:` must be all caps and bold)
+---
 
-## Constraints & Requirements
-- Response time must be **under 5 seconds** per label - but will work on MVP originally.
-- UI must be simple enough for the older gen, no buried buttons, obvious workflow
-- Batch upload support for processing multiple labels at once
-- Standalone app — no COLA system integration required
-- No sensitive data retention
+## TTB Fields Verified
+
+| Field | Example Value |
+|-------|---------------|
+| `BRAND` | `Malt & Hop Brewing Co.` |
+| `CLASS` | `Dark Ale` |
+| `ABV` | `12%` |
+| `NET` | `12 FL OZ` |
+
+---
 
 ## Compliance Logic
-- **Exact match required**: Government Warning text (word-for-word, `GOVERNMENT WARNING:` in all caps)
-- **Fuzzy match acceptable**: Brand name casing/formatting differences (e.g., `STONE'S THROW` vs `Stone's Throw`)
-- **Numeric validation**: ABV percentage and proof values must be consistent and match application data
-- **Presence check**: All mandatory fields must exist on the label
+
+| Check | Rule |
+|-------|------|
+| **Government Warning** | Both paragraphs must be present in substance. Minor spacing, line breaks, or punctuation differences are acceptable. Any orientation (horizontal/vertical) is valid. |
+| **ABV** | Alcohol percentage on label must match application data. |
+| **Brand Name** | Must match between label and application. |
+| **Class/Type** | Must match between label and application. |
+| **Net Contents** | Must match between label and application. |
+| **Name & Address** | Bottler/importer must be present on label. City and state are sufficient. |
+
+---
+
+## Constraints & Requirements
+
+- Response time aims to be **under 5 seconds** per label
+- UI must be simple enough for non-technical users — no buried buttons, obvious workflow
+- Batch upload support for processing multiple labels at once
+- Standalone app — no COLA System integration required
+- No sensitive data retention
+
+---
 
 ## Assumptions
-- Prototype only 
-- Label images are of common alcohol beverages (beer, wine, distilled spirits)
-- Text file input follows a consistent key:value format for application data
-- No direct integration with TTB's COLA system
+
+- Label images are clear enough for AI vision to read all text fields.
+- Government Warning does not need to be in a specific orientation or exact formatting — only that all required content is present in substance.
+- City and state are sufficient for the name/address requirement (full street address not required).
+- Minor formatting differences (casing, spacing, line breaks) are not grounds for failure.
+- This is a prototype aid for reviewers, **not a replacement** for official [TTB review](https://www.ttb.gov/labeling).
+
+---
 
 ## Trade-offs & Limitations
-- API costs
-- TBD
+
+| Limitation | Details |
+|------------|---------|
+| **API Costs** | This is a prototype designed to demonstrate the concept. For production use, training a local OCR model would be more cost-effective, faster, and more secure. |
+| **Data Privacy** | This application sends data to [Anthropic's Claude API](https://www.anthropic.com/). If handling sensitive or proprietary label data, a self-hosted solution would be advisable. |
+| **Rate Limits** | Anthropic's API enforces per-minute token limits. High-resolution label images consume significant tokens, which can throttle throughput on lower API tiers. |
+
+---
+
+## How to Run Locally
+
+```bash
+# Clone the repo
+git clone https://github.com/bryce72/ttb-ai.git
+cd ttb-ai
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set your API key
+export ANTHROPIC_API_KEY=your_key_here
+
+# Run the app
+python app.py
 
 
+# Then run the HTML file on a local server port of your choice (I used 5500)
+```
 
+## How to Test
 
-## How to Test Run this
+🔗 Go to: **[https://ttb-ai.onrender.com](https://ttb-ai.onrender.com)**
+
+1. Upload a `.txt` application file
+2. Upload a `.png` or `.jpg` label image
+3. Click verify
+4. Review the compliance result
+
+---
+
+## Prompt Used
+
+<details>
+<summary>Click to expand the compliance prompt</summary>
+
+```
+TTB label compliance review.
+
+APPLICATION:
+{text_content}
+
+Verify label against application for:
+1. The Government Warning may appear in any orientation (horizontal or vertical).
+   Minor spacing, line breaks, or punctuation differences are acceptable.
+   All required words and both paragraphs (1) and (2) must be present in substance.
+2. ABV matches ABV
+3. BRAND matches BRAND
+4. CLASS matches CLASS
+5. NET matches NET
+6. Name and address present on label (city and state are sufficient)
+
+If all pass, output exactly:
+APPROVED
+
+If any fail, output exactly:
+NEEDS REVISION:
+- Item number - reason
+
+Do not explain passed items.
+```
+
+</details>
