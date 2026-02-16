@@ -1,4 +1,0 @@
-BRAND=
-CLASS=
-ABV=
-NET=
