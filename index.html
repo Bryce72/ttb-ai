@@ -91,6 +91,13 @@
     setup('file1', 'box1', 'name1');
     setup('file2', 'box2', 'name2');
 
+    // ── Force clean state on bfcache restore ──────────
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) location.reload();
+    });
+
+
+
     // ── Form submission via fetch ─────────────────────
     document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
